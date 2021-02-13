@@ -32,7 +32,7 @@ public class CustomConfiguration  {
 	@Bean
 	public MessageSource messageSource() {
 		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-		messageSource.setBasename("classpath:/i18n/messages");
+		messageSource.setBasename("classpath:i18n/messages");
 		messageSource.setDefaultLocale(Locale.forLanguageTag("tr"));
 		messageSource.setDefaultEncoding(StandardCharsets.UTF_8.toString());
 		return messageSource;

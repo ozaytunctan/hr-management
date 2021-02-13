@@ -32,7 +32,7 @@ public class BaseEntity<ID extends Number> implements Serializable {
 	private ID id;
 
 	@Column(name = "CREATED_BY")
-	private String createdBy;
+	private String createdBy="ozaytunctan";
 
 	@Column(name = "CREATED_DATE")
 	@Temporal(TemporalType.DATE)

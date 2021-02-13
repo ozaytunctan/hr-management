@@ -1,6 +1,11 @@
 package com.tr.hr.controller;
 
+import java.util.Locale;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +21,7 @@ import com.tr.hr.dto.EmployeeDto;
 import com.tr.hr.dto.PagedResultDto;
 import com.tr.hr.entity.Employee;
 import com.tr.hr.service.EmployeeService;
+import com.tr.hr.service.MessageService;
 
 @RestController
 @RequestMapping(path = "/api/v1/employee")
@@ -23,9 +29,13 @@ public class EmployeeController {
 
 	@Autowired
 	private EmployeeService employeeService;
+	
+	@Autowired
+	private MessageService messageService;
 
-	@GetMapping("/{id}")
-	public ServiceResult<Employee> getEmployeeById(@PathVariable("id") Long id) {
+	@GetMapping(path="/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+	public ServiceResult<EmployeeDto> getEmployeeById(@PathVariable("id") Long id) {
+		Locale locale = LocaleContextHolder.getLocale();
 		return this.employeeService.getEmployeeById(id);
 	}
 

@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
@@ -116,6 +115,21 @@ public class Phone extends BaseEntity<Long> {
 
 	public void setTitle(PhoneTitle title) {
 		this.title = title;
+	}
+	
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+
+		if (obj == null || obj.getClass().equals(this.getClass()))
+			return false;
+
+		Phone phone = (Phone) obj;
+
+		return phone.getId().equals(this.getId());
+
 	}
 
 }

@@ -1,6 +1,10 @@
 package com.tr.hr.service.impl;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +16,9 @@ import com.tr.hr.common.ServiceResult;
 import com.tr.hr.common.enums.ServiceResultType;
 import com.tr.hr.dto.EmployeeDto;
 import com.tr.hr.dto.PagedResultDto;
+import com.tr.hr.dto.PhoneDto;
 import com.tr.hr.entity.Employee;
+import com.tr.hr.entity.Phone;
 import com.tr.hr.exceptions.NotFoundEmployeeException;
 import com.tr.hr.repository.EmployeeRepository;
 import com.tr.hr.service.EmployeeService;
@@ -24,10 +30,23 @@ public class EmployeeServiceImpl implements EmployeeService {
 	private EmployeeRepository employeeRepository;
 
 	@Override
-	public ServiceResult<Employee> getEmployeeById(Long id) {
-		Employee employee = this.employeeRepository.findEmployeeById(id)
-				.orElseThrow(() -> new NotFoundEmployeeException("Employee by id " + id + " not found"));
-		return new ServiceResult<Employee>(employee, ServiceResultType.SUCCESS);
+	public ServiceResult<EmployeeDto> getEmployeeById(Long id) {
+		EmployeeDto employeeDto = this.employeeRepository.findEmployeeById(id)
+				.map(employee -> new EmployeeDto(employee.getId(),
+						employee.getFirstName(),
+						employee.getLastName(),
+						mapDto(employee.getPhones())))
+				.orElseThrow(() -> new NotFoundEmployeeException("error.employee.not.found",new Object[] {id}));
+		
+		return new ServiceResult<EmployeeDto>(employeeDto, ServiceResultType.SUCCESS);
+	}
+	
+	private List<PhoneDto> mapDto(List<Phone>phones){
+		return Optional.ofNullable(phones)
+		.orElseGet(Collections::emptyList)
+		.stream()
+        .map(phone->new PhoneDto(phone.getId(),phone.getTitle(),phone.getPhone()))
+        .collect(Collectors.toList());
 	}
 
 	@Override

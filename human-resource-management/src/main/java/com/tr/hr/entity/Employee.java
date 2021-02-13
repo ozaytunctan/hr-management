@@ -8,9 +8,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -32,10 +30,10 @@ public class Employee extends BaseEntity<Long> {
 	@Column(name = "IDENTITY_NUMBER", length = 11, unique = true)
 	private String identityNumber;
 
-	@Column(name = "FIRST_NAME", nullable = false)
+	@Column(name = "FIRST_NAME")
 	private String firstName;
 
-	@Column(name = "LAST_NAME", nullable = false)
+	@Column(name = "LAST_NAME")
 	private String lastName;
 
 	@Transient
@@ -50,20 +48,7 @@ public class Employee extends BaseEntity<Long> {
 	@Column(name = "BIRTH_DATE")
 	@Temporal(TemporalType.DATE)
 	private Date birthDate;
-	
-	/**
-	 * Not: Cascade Type önemli!! 
-	 * 
-	 * Cascade type Refresh çünkü Position ataması yapılacak. Veritabanındaki id olmalıdır. yoksa hata fırlatır.
-	 * Cascade type Persist ise aynı id var ise veritabanındaki değeri al ekle id yok ise yeniden oluştur.
-	 * Cascade type Merge ise aynı id var ise  o nesnenin değerleri ile güncellenir.
-	 * Cascade type Remove ise kademlei olarak bağlı nesleri de siler
-	 */
-	@OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.PERSIST,targetEntity = Position.class)
-	@JoinColumn(name = "POSITION_ID",referencedColumnName = "ID")
-	private Position position;
-	
-//	private Department department;
+
 
 	public Employee() {
 		super(0l);
@@ -88,20 +73,6 @@ public class Employee extends BaseEntity<Long> {
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-
-		if (obj == null || obj.getClass().equals(this.getClass()))
-			return false;
-
-		Employee employee = (Employee) obj;
-
-		return employee.getId().equals(this.getId()) && employee.getFirstName().equals(this.firstName);
-
 	}
 
 	public void addPhone(Phone phone) {
@@ -152,13 +123,21 @@ public class Employee extends BaseEntity<Long> {
 	public void setBirthDate(Date birthDate) {
 		this.birthDate = birthDate;
 	}
+	
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
 
-	public Position getPosition() {
-		return position;
+		if (obj == null || obj.getClass().equals(this.getClass()))
+			return false;
+
+		Employee employee = (Employee) obj;
+
+		return employee.getId().equals(this.getId()) && employee.getFirstName().equals(this.firstName);
+
 	}
 
-	public void setPosition(Position position) {
-		this.position = position;
-	}
-
+	
 }

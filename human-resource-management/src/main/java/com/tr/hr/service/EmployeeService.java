@@ -9,7 +9,7 @@ import com.tr.hr.entity.Employee;
 
 public interface EmployeeService {
 
-	public ServiceResult<Employee> getEmployeeById(Long id);
+	public ServiceResult<EmployeeDto> getEmployeeById(Long id);
 
 	public ServiceResult<Void> deleteEmployeeById(Long id);
 

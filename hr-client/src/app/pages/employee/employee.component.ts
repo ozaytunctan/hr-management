@@ -8,16 +8,18 @@ import { EmployeeService } from 'src/app/core/service/employee.service';
 })
 export class EmployeeComponent implements OnInit {
 
+  employee:any;
   constructor(private employeeService:EmployeeService) { }
 
   ngOnInit(): void {
-    this.employeeService.getEmployeeById(1).subscribe(data=>{
-      console.log(data);
+    this.employeeService.getEmployeeById(2).subscribe(data=>{
+     this.employee=data;
+     console.log(this.employee);
     });
 
-    this.employeeService.getEmployess(0,10).subscribe(data=>{
-      console.log(data);
-    });
+    // this.employeeService.getEmployess(0,10).subscribe(data=>{
+    //   console.log(data);
+    // });
   }
 
 }

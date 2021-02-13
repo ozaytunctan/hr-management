@@ -7,62 +7,91 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import com.tr.hr.entity.Department;
 import com.tr.hr.entity.Employee;
+import com.tr.hr.entity.EmployeeDepartmentHistory;
 import com.tr.hr.entity.Phone;
 import com.tr.hr.entity.Position;
 import com.tr.hr.enums.PhoneTitle;
-import com.tr.hr.repository.EmployeeRepository;
+import com.tr.hr.repository.DepartmentRespository;
+import com.tr.hr.repository.EmployeeDepartmentHistoryRepository;
 import com.tr.hr.repository.PositionRepository;
 
 @Component
 public class Startup implements CommandLineRunner {
 
 	@Autowired
-	private EmployeeRepository employeeRepository;
-	
+	private PositionRepository positionRepository;
+
 	@Autowired
-     private PositionRepository positionRepository;
+	private DepartmentRespository departmentRespository;
+
+	@Autowired
+	private EmployeeDepartmentHistoryRepository employeeDepartmentHistoryRepository;
+
 	@Override
 	public void run(String... args) throws Exception {
-		List<Employee> employees = new ArrayList<>();
+		saveEmployeeDepartmentHistory();
+	}
 
-		Position position=new Position();
-		position.setCode("IK");
-		position.setName("Insan Kaynakları");
-		position=positionRepository.saveAndFlush(position);
-		
+	private void saveEmployeeDepartmentHistory() {
+
+		List<EmployeeDepartmentHistory> employeeDepartmentHistories = new ArrayList<>();
+
+		Position positionYZ = new Position();
+		positionYZ.setCode("YZ-0");
+		positionYZ.setName("Java Yazılım Mühendisi");
+		positionYZ = positionRepository.saveAndFlush(positionYZ);
+
+		Department departmentIK = new Department("IK", "INSAN KAYNAKLARI");
+		departmentIK = departmentRespository.saveAndFlush(departmentIK);
+
 		for (int i = 0; i <= 9; i++) {
+
 			Phone phone = new Phone();
 			phone.setTitle(PhoneTitle.MOBILE);
-			phone.setCountryCode("90");
-			phone.setAreaCode("538");
-			phone.setNumber("011046" + i);
-			phone.ceatePhone("90","538","011046" + i);
+			phone.ceatePhone("90", "538", "011046" + i);
 
 			Employee employee = new Employee();
 			employee.setFirstName(i + ".test-name");
 			employee.setLastName(i + ".test-lastname");
 			employee.addPhone(phone);
-			employee.setPosition(position);
-			
-			if (i==5) {
+			if (i == 1) {
 				Phone phone2 = new Phone();
 				phone2.setTitle(PhoneTitle.HOME);
-				phone2.ceatePhone("90","222","8110401");
+				phone2.ceatePhone("90", "222", "8110401");
 				employee.addPhone(phone2);
-				employee.setPosition(new Position(position.getId()));
+			}
+
+			EmployeeDepartmentHistory employeeDepartmentHistory = new EmployeeDepartmentHistory();
+
+			employeeDepartmentHistory.setEmployee(employee);
+			employeeDepartmentHistory.setPosition(positionYZ);
+			employeeDepartmentHistory.setDepartment(departmentIK);
+
+			if (i == 3) {
+//				employeeDepartmentHistory.setPosition(this.positionRepository.saveAndFlush(new Position("IK-0", "Insan Kaynakları Yrdmcs")));
+//				employeeDepartmentHistory.setDepartment(this.departmentRespository.saveAndFlush(new Department("YZLM", "YAZILIM")));
+				employeeDepartmentHistory.setPosition(new Position("IK-0", "Insan Kaynakları Yrdmcs"));
+				employeeDepartmentHistory.setDepartment(new Department("YZLM", "YAZILIM"));
+			}
+
+			if (i == 5) {
+				employeeDepartmentHistory.setPosition(new Position("IK-1", "Insan Kaynakları Müdürü"));
+				employeeDepartmentHistory.setDepartment(new Department(departmentIK.getId()));
 			}
 			
-			if (i==6) {
-				
-				employee.setPosition(new Position(0));
+			if (i == 8) {
+				employeeDepartmentHistory.setPosition(new Position(positionYZ.getId()));
+				employeeDepartmentHistory.setDepartment(new Department(departmentIK.getId()));
 			}
+
+			employeeDepartmentHistories.add(employeeDepartmentHistory);
 			
-			
-			employees.add(employee);
 		}
 
-		this.employeeRepository.saveAll(employees);
+		this.employeeDepartmentHistoryRepository.saveAll(employeeDepartmentHistories);
+
 	}
 
 }

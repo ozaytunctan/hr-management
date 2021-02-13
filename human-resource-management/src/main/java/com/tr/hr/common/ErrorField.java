@@ -2,7 +2,7 @@ package com.tr.hr.common;
 
 public class ErrorField {
 
-	private String name;
+	private String code;
 	
 	private String message;
 	
@@ -10,18 +10,18 @@ public class ErrorField {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ErrorField(String name, String message) {
+	public ErrorField(String code, String message) {
 		super();
-		this.name = name;
+		this.code = code;
 		this.message = message;
 	}
 
-	public String getName() {
-		return name;
+	public String getCode() {
+		return code;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 	public String getMessage() {
