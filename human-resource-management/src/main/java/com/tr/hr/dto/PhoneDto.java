@@ -21,6 +21,9 @@ public class PhoneDto extends BaseDto<Long> {
 
 	private String phone;
 	
+	public PhoneDto(){
+		this(0l);
+	}
 	public PhoneDto(Long id) {
 		super(id);
 	}

@@ -1,10 +1,6 @@
 package com.tr.hr.controller;
 
-import java.util.Locale;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tr.hr.common.ServiceResult;
 import com.tr.hr.dto.EmployeeDto;
 import com.tr.hr.dto.PagedResultDto;
-import com.tr.hr.entity.Employee;
 import com.tr.hr.service.EmployeeService;
 import com.tr.hr.service.MessageService;
 
@@ -35,7 +30,6 @@ public class EmployeeController {
 
 	@GetMapping(path="/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ServiceResult<EmployeeDto> getEmployeeById(@PathVariable("id") Long id) {
-		Locale locale = LocaleContextHolder.getLocale();
 		return this.employeeService.getEmployeeById(id);
 	}
 
@@ -55,13 +49,13 @@ public class EmployeeController {
 	}
 
 	@PostMapping(path = "/add")
-	public ServiceResult<Employee> createEmpployee(@RequestBody() Employee employee) {
-		return this.employeeService.createEmployee(employee);
+	public ServiceResult<EmployeeDto> createEmpployee(@RequestBody() EmployeeDto employeeDto) {
+		return this.employeeService.createEmployee(employeeDto);
 	}
 
 	@PutMapping(path = "/update/{id}")
-	public ServiceResult<Employee> updateEmployee(@PathVariable("id") Long id, @RequestBody() Employee employee) {
-		return this.employeeService.updateEmploye(id, employee);
+	public ServiceResult<EmployeeDto> updateEmployee(@PathVariable("id") Long id, @RequestBody() EmployeeDto employeeDto) {
+		return this.employeeService.updateEmploye(id, employeeDto);
 	}
 
 	@DeleteMapping(path = "/delete/{id}")

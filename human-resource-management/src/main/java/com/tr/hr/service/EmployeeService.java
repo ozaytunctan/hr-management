@@ -5,7 +5,6 @@ import java.util.List;
 import com.tr.hr.common.ServiceResult;
 import com.tr.hr.dto.EmployeeDto;
 import com.tr.hr.dto.PagedResultDto;
-import com.tr.hr.entity.Employee;
 
 public interface EmployeeService {
 
@@ -13,11 +12,11 @@ public interface EmployeeService {
 
 	public ServiceResult<Void> deleteEmployeeById(Long id);
 
-	public ServiceResult<Employee> createEmployee(Employee employee);
+	public ServiceResult<EmployeeDto> createEmployee(EmployeeDto employeeDto);
 
-	public ServiceResult<Employee> updateEmploye(Long id, Employee employee);
+	public ServiceResult<EmployeeDto> updateEmploye(Long id, EmployeeDto employeeDto);
 
-	public ServiceResult<List<Employee>> getEmployees();
+	public ServiceResult<List<EmployeeDto>> getEmployees();
 
 	public ServiceResult<PagedResultDto<EmployeeDto>> getEmployees(Integer pageNumber, Integer pageSize);
 
