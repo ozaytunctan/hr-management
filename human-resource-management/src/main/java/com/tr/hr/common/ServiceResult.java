@@ -17,6 +17,11 @@ public class ServiceResult<T> implements Serializable {
 
 	private ErrorDetails error;
 
+
+	public ServiceResult() {
+
+	}
+	
 	public ServiceResult(ServiceResultType resultType) {
 		setResultType(resultType);
 	}
